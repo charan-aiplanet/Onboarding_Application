@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-onboarding - AI Planet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-rocket text-2xl text-blue-600 mr-3"></i>
+                    <h1 class="text-xl font-semibold text-gray-900">AI Planet Pre-onboarding</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-blue-600 hover:text-blue-800 font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                    </a>
+                    <a href="/logout" class="text-red-600 hover:text-red-800 font-medium">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Dashboard Overview -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Pre-onboarding Dashboard</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="statsCards">
+                <!-- Stats will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-xl shadow-lg mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex">
+                    <button onclick="showTab('offer-generator')" 
+                            class="tab-button py-4 px-6 border-b-2 font-medium text-sm border-blue-500 text-blue-600" 
+                            id="offer-generator-tab">
+                        <i class="fas fa-file-contract mr-2"></i>Offer Letter Generator
+                    </button>
+                    <button onclick="showTab('candidates')" 
+                            class="tab-button py-4 px-6 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700" 
+                            id="candidates-tab">
+                        <i class="fas fa-users mr-2"></i>Candidate Management
+                    </button>
+                    <button onclick="showTab('analytics')" 
+                            class="tab-button py-4 px-6 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700" 
+                            id="analytics-tab">
+                        <i class="fas fa-chart-bar mr-2"></i>Analytics
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="p-6">
+                <!-- Offer Letter Generator Tab -->
+                <div id="offer-generator" class="tab-content">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6">Generate Offer Letter</h3>
+                    
+                    <form id="offerLetterForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <h4 class="font-medium text-gray-900">Candidate Information</h4>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                    <input type="text" id="candidateName" required 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                    <input type="email" id="candidateEmail" required 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                                    <textarea id="candidateAddress" required 
+                                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" 
+                                             rows="3"></textarea>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Position</label>
+                                    <select id="candidatePosition" required 
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Select Position</option>
+                                        <option value="Full Stack Developer">Full Stack Developer</option>
+                                        <option value="Data Scientist">Data Scientist</option>
+                                        <option value="Business Analyst">Business Analyst</option>
+                                        <option value="Product Manager">Product Manager</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <h4 class="font-medium text-gray-900">Employment Details</h4>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                                    <input type="date" id="startDate" required 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Employment Type</label>
+                                    <select id="employmentType" required 
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                        <option value="Full-time">Full-time</option>
+                                        <option value="Intern">Intern</option>
+                                        <option value="Contract">Contract</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Monthly Salary (₹)</label>
+                                    <input type="number" id="salary" required 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                           placeholder="37500">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                                    <input type="text" id="location" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                           value="AI Planet HQ, Hyderabad">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">HR Representative</label>
+                                    <input type="text" id="hrName" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                           value="Eswar Viswanathan">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Reporting Manager</label>
+                                    <input type="text" id="reportingManager" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                           value="Chanukya Patnaik">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-4">
+                            <button type="submit" 
+                                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                                <i class="fas fa-file-contract mr-2"></i>Generate Offer Letter
+                            </button>
+                            <button type="button" id="previewBtn" style="display: none;"
+                                    class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-200">
+                                <i class="fas fa-eye mr-2"></i>Preview & Send
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Preview Section -->
+                    <div id="previewSection" style="display: none;" class="mt-8 border-t pt-6">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Offer Letter Preview</h4>
+                        <div id="pdfPreview" class="border border-gray-300 rounded-lg p-4 mb-4 bg-gray-50">
+                            <p class="text-gray-600">Offer letter will be previewed here...</p>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <button type="button" id="sendOfferBtn"
+                                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                                <i class="fas fa-paper-plane mr-2"></i>Send Offer Letter
+                            </button>
+                            <button type="button" id="downloadBtn"
+                                    class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                                <i class="fas fa-download mr-2"></i>Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Candidates Tab -->
+                <div id="candidates" class="tab-content" style="display: none;">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Candidate Management</h3>
+                        <button onclick="refreshCandidates()" 
+                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="px-6 py-3 bg-gray-50 border-b border-gray-200">
+                            <div class="grid grid-cols-6 gap-4 text-sm font-medium text-gray-700">
+                                <div>Name</div>
+                                <div>Position</div>
+                                <div>Start Date</div>
+                                <div>Status</div>
+                                <div>Salary</div>
+                                <div>Actions</div>
+                            </div>
+                        </div>
+                        <div id="candidatesTable" class="divide-y divide-gray-200">
+                            <!-- Candidates will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analytics" class="tab-content" style="display: none;">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6">Onboarding Analytics</h3>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg border border-gray-200">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Offer Status Distribution</h4>
+                            <canvas id="statusChart" width="400" height="300"></canvas>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg border border-gray-200">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Position Distribution</h4>
+                            <canvas id="positionChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentEmployeeId = null;
+        let employees = [];
+
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('border-blue-500', 'text-blue-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).style.display = 'block';
+            
+            // Add active class to selected tab
+            const activeTab = document.getElementById(tabName + '-tab');
+            activeTab.classList.remove('border-transparent', 'text-gray-500');
+            activeTab.classList.add('border-blue-500', 'text-blue-600');
+            
+            // Load data for specific tabs
+            if (tabName === 'candidates') {
+                loadCandidates();
+            } else if (tabName === 'analytics') {
+                loadAnalytics();
+            }
+        }
+
+        // Load dashboard statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/employees');
+                const employees = await response.json();
+                
+                const totalOffers = employees.length;
+                const offersSent = employees.filter(emp => emp.offer_sent).length;
+                const offersAccepted = employees.filter(emp => emp.offer_accepted).length;
+                const onboardingCompleted = employees.filter(emp => emp.onboarding_completed).length;
+                
+                const statsHtml = `
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <i class="fas fa-file-contract text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-2xl font-bold text-gray-900">${totalOffers}</p>
+                                <p class="text-gray-600">Total Offers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-green-100 rounded-lg">
+                                <i class="fas fa-paper-plane text-green-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-2xl font-bold text-gray-900">${offersSent}</p>
+                                <p class="text-gray-600">Offers Sent</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-yellow-100 rounded-lg">
+                                <i class="fas fa-handshake text-yellow-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-2xl font-bold text-gray-900">${offersAccepted}</p>
+                                <p class="text-gray-600">Offers Accepted</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-purple-100 rounded-lg">
+                                <i class="fas fa-check-circle text-purple-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-2xl font-bold text-gray-900">${onboardingCompleted}</p>
+                                <p class="text-gray-600">Onboarding Complete</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('statsCards').innerHTML = statsHtml;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load candidates
+        async function loadCandidates() {
+            try {
+                const response = await fetch('/api/employees');
+                employees = await response.json();
+                
+                const tableHtml = employees.map(emp => {
+                    const status = emp.onboarding_completed ? 'Completed' : 
+                                  emp.offer_accepted ? 'Accepted' : 
+                                  emp.offer_sent ? 'Sent' : 'Generated';
+                    
+                    const statusColor = emp.onboarding_completed ? 'bg-green-100 text-green-800' : 
+                                       emp.offer_accepted ? 'bg-yellow-100 text-yellow-800' : 
+                                       emp.offer_sent ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800';
+                    
+                    return `
+                        <div class="grid grid-cols-6 gap-4 px-6 py-4 text-sm">
+                            <div class="font-medium text-gray-900">${emp.name}</div>
+                            <div class="text-gray-600">${emp.position}</div>
+                            <div class="text-gray-600">${emp.start_date}</div>
+                            <div><span class="px-2 py-1 rounded-full text-xs font-medium ${statusColor}">${status}</span></div>
+                            <div class="text-gray-600">₹${emp.annual_salary}</div>
+                            <div class="flex space-x-2">
+                                <button onclick="viewEmployee('${emp.id}')" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button onclick="editEmployee('${emp.id}')" class="text-green-600 hover:text-green-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                ${!emp.offer_sent ? `<button onclick="sendOffer('${emp.id}')" class="text-purple-600 hover:text-purple-800">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('candidatesTable').innerHTML = tableHtml;
+            } catch (error) {
+                console.error('Error loading candidates:', error);
+            }
+        }
+
+        // Load analytics
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/employees');
+                const employees = await response.json();
+                
+                // Status distribution chart
+                const statusCounts = {
+                    'Generated': employees.filter(emp => !emp.offer_sent).length,
+                    'Sent': employees.filter(emp => emp.offer_sent && !emp.offer_accepted).length,
+                    'Accepted': employees.filter(emp => emp.offer_accepted && !emp.onboarding_completed).length,
+                    'Completed': employees.filter(emp => emp.onboarding_completed).length
+                };
+                
+                const statusChart = new Chart(document.getElementById('statusChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(statusCounts),
+                        datasets: [{
+                            data: Object.values(statusCounts),
+                            backgroundColor: ['#f3f4f6', '#dbeafe', '#fef3c7', '#dcfce7']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+                
+                // Position distribution chart
+                const positionCounts = {};
+                employees.forEach(emp => {
+                    positionCounts[emp.position] = (positionCounts[emp.position] || 0) + 1;
+                });
+                
+                const positionChart = new Chart(document.getElementById('positionChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(positionCounts),
+                        datasets: [{
+                            label: 'Candidates',
+                            data: Object.values(positionCounts),
+                            backgroundColor: '#3b82f6'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
+
+        // Form submission
+        document.getElementById('offerLetterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('candidateName').value,
+                email: document.getElementById('candidateEmail').value,
+                address: document.getElementById('candidateAddress').value,
+                position: document.getElementById('candidatePosition').value,
+                start_date: new Date(document.getElementById('startDate').value).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }),
+                employment_type: document.getElementById('employmentType').value,
+                annual_salary: document.getElementById('salary').value,
+                location: document.getElementById('location').value,
+                hr_name: document.getElementById('hrName').value,
+                reporting_manager: document.getElementById('reportingManager').value
+            };
+            
+            try {
+                const response = await fetch('/api/employees', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentEmployeeId = result.id;
+                    document.getElementById('previewBtn').style.display = 'inline-block';
+                    showToast('Offer letter created successfully!', 'success');
+                    loadStats(); // Refresh stats
+                } else {
+                    showToast('Error creating offer letter', 'error');
+                }
+            } catch (error) {
+                showToast('Error creating offer letter', 'error');
+            }
+        });
+
+        // Preview offer letter
+        document.getElementById('previewBtn').addEventListener('click', async () => {
+            if (!currentEmployeeId) return;
+            
+            try {
+                const response = await fetch(`/api/employees/${currentEmployeeId}/offer_letter`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('previewSection').style.display = 'block';
+                    document.getElementById('pdfPreview').innerHTML = `
+                        <div class="text-center">
+                            <i class="fas fa-file-pdf text-red-500 text-6xl mb-4"></i>
+                            <p class="text-gray-700">PDF Generated Successfully</p>
+                            <p class="text-sm text-gray-500">Click Download to view the full offer letter</p>
+                        </div>
+                    `;
+                    
+                    // Store PDF content for download
+                    window.currentPdfContent = result.pdf_content;
+                } else {
+                    showToast('Error generating PDF', 'error');
+                }
+            } catch (error) {
+                showToast('Error generating PDF', 'error');
+            }
+        });
+
+        // Send offer letter
+        document.getElementById('sendOfferBtn').addEventListener('click', async () => {
+            if (!currentEmployeeId) return;
+            
+            if (confirm('Are you sure you want to send this offer letter?')) {
+                try {
+                    const response = await fetch(`/api/employees/${currentEmployeeId}/send_offer`, {
+                        method: 'POST'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showToast('Offer letter sent successfully!', 'success');
+                        loadStats(); // Refresh stats
+                        loadCandidates(); // Refresh candidates table
+                    } else {
+                        showToast('Error sending offer letter: ' + result.message, 'error');
+                    }
+                } catch (error) {
+                    showToast('Error sending offer letter', 'error');
+                }
+            }
+        });
+
+        // Download PDF
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            if (window.currentPdfContent) {
+                const byteCharacters = atob(window.currentPdfContent);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], {type: 'application/pdf'});
+                
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'offer_letter.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }
+        });
+
+        // Utility functions
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-50 transition-opacity duration-300 ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        function refreshCandidates() {
+            loadCandidates();
+            showToast('Candidates refreshed', 'success');
+        }
+
+        function viewEmployee(id) {
+            const employee = employees.find(emp => emp.id === id);
+            if (employee) {
+                alert(`Employee Details:\n\nName: ${employee.name}\nEmail: ${employee.email}\nPosition: ${employee.position}\nStart Date: ${employee.start_date}\nSalary: ₹${employee.annual_salary}`);
+            }
+        }
+
+        function editEmployee(id) {
+            const employee = employees.find(emp => emp.id === id);
+            if (employee) {
+                // Fill form with employee data for editing
+                document.getElementById('candidateName').value = employee.name;
+                document.getElementById('candidateEmail').value = employee.email;
+                document.getElementById('candidateAddress').value = employee.address || '';
+                document.getElementById('candidatePosition').value = employee.position;
+                document.getElementById('startDate').value = employee.start_date;
+                document.getElementById('employmentType').value = employee.employment_type;
+                document.getElementById('salary').value = employee.annual_salary;
+                document.getElementById('location').value = employee.location || 'AI Planet HQ, Hyderabad';
+                document.getElementById('hrName').value = employee.hr_name || 'Eswar Viswanathan';
+                document.getElementById('reportingManager').value = employee.reporting_manager || 'Chanukya Patnaik';
+                
+                // Switch to offer generator tab
+                showTab('offer-generator');
+                currentEmployeeId = id;
+            }
+        }
+
+        async function sendOffer(id) {
+            if (confirm('Send offer letter to this candidate?')) {
+                try {
+                    const response = await fetch(`/api/employees/${id}/send_offer`, {
+                        method: 'POST'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showToast('Offer letter sent successfully!', 'success');
+                        loadStats();
+                        loadCandidates();
+                    } else {
+                        showToast('Error sending offer letter: ' + result.message, 'error');
+                    }
+                } catch (error) {
+                    showToast('Error sending offer letter', 'error');
+                }
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').min = today;
+        });
+    </script>
+</body>
+</html>

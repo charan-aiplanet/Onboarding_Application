@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard - AI Planet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-rocket text-2xl text-blue-600 mr-3"></i>
+                    <h1 class="text-xl font-semibold text-gray-900">AI Planet - Employee Portal</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600 bg-blue-100 px-3 py-1 rounded-full">
+                        <i class="fas fa-user-tag mr-1"></i>{{ designation.replace('_', ' ').title() }}
+                    </span>
+                    <a href="/logout" class="text-red-600 hover:text-red-800 font-medium">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Documents Section -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">
+                        <i class="fas fa-folder-open mr-2 text-blue-600"></i>Your Onboarding Documents
+                    </h2>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                            <i class="fas fa-info-circle text-blue-500"></i>
+                            <span>These documents are specifically curated for your role as a {{ designation.replace('_', ' ').title() }}</span>
+                        </div>
+                    </div>
+                    
+                    <div id="employeeDocuments" class="space-y-4">
+                        <div class="text-center py-8">
+                            <i class="fas fa-spinner fa-spin text-4xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500">Loading your documents...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Chatbot Section -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            <i class="fas fa-robot mr-2 text-green-600"></i>AI Assistant
+                        </h3>
+                        <div class="flex items-center text-sm text-green-600">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                            Online
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col h-96">
+                        <!-- Chat Messages Container -->
+                        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 bg-gray-50 rounded-lg mb-4 space-y-3">
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <div class="flex items-start space-x-2">
+                                    <i class="fas fa-robot text-blue-600 mt-1"></i>
+                                    <div>
+                                        <p class="text-sm text-blue-800 font-medium">AI Assistant</p>
+                                        <p class="text-sm text-blue-700 mt-1">
+                                            Hi! I'm your onboarding assistant. I'm trained on documents specific to your role as a {{ designation.replace('_', ' ').title() }}. 
+                                            Ask me anything about your position, responsibilities, or onboarding process!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chat Input -->
+                        <div class="flex space-x-2">
+                            <input type="text" id="chatInput" placeholder="Ask me about your role..." 
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   onkeypress="if(event.key==='Enter') sendMessage()">
+                            <button onclick="sendMessage()" id="sendButton"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center justify-center">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Questions -->
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <p class="text-xs text-gray-500 mb-2">Quick questions to get started:</p>
+                        <div class="space-y-1">
+                            <button onclick="askQuickQuestion('What are my main responsibilities?')" 
+                                    class="w-full text-left text-xs text-blue-600 hover:text-blue-800 py-1 px-2 rounded hover:bg-blue-50 transition duration-200">
+                                • What are my main responsibilities?
+                            </button>
+                            <button onclick="askQuickQuestion('What tools and technologies should I know?')" 
+                                    class="w-full text-left text-xs text-blue-600 hover:text-blue-800 py-1 px-2 rounded hover:bg-blue-50 transition duration-200">
+                                • What tools and technologies should I know?
+                            </button>
+                            <button onclick="askQuickQuestion('What is the onboarding process?')" 
+                                    class="w-full text-left text-xs text-blue-600 hover:text-blue-800 py-1 px-2 rounded hover:bg-blue-50 transition duration-200">
+                                • What is the onboarding process?
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Welcome Section -->
+        <div class="mt-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">Welcome to AI Planet! 🚀</h2>
+                    <p class="text-blue-100">
+                        You're now part of our amazing team. Use the AI assistant to get answers about your role, 
+                        and don't forget to download and review your onboarding documents.
+                    </p>
+                </div>
+                <div class="hidden md:block">
+                    <i class="fas fa-rocket text-6xl text-blue-200"></i>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let chatHistory = [];
+
+        async function loadEmployeeDocuments() {
+            try {
+                const response = await fetch('/get_documents');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const documentsContainer = document.getElementById('employeeDocuments');
+                    documentsContainer.innerHTML = '';
+                    
+                    if (result.documents.length === 0) {
+                        documentsContainer.innerHTML = `
+                            <div class="text-center py-8">
+                                <i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">No documents available yet</h3>
+                                <p class="text-gray-500">Your role-specific documents will appear here once uploaded by the admin.</p>
+                                <p class="text-sm text-gray-400 mt-2">Contact your HR team if you think this is an error.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    result.documents.forEach((doc, index) => {
+                        const docElement = document.createElement('div');
+                        docElement.className = 'border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-white';
+                        docElement.innerHTML = `
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center flex-1">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fas fa-file-alt text-blue-600 text-xl"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-medium text-gray-900 truncate">${doc[0]}</h4>
+                                        <p class="text-sm text-gray-500">Uploaded: ${new Date(doc[2]).toLocaleDateString()}</p>
+                                        <div class="mt-1">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                <i class="fas fa-tag mr-1"></i>${doc[1].replace('_', ' ').toUpperCase()}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2 ml-4">
+                                    <a href="/download_document/${doc[0]}" 
+                                       class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center space-x-2">
+                                        <i class="fas fa-download"></i>
+                                        <span>Download</span>
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                        documentsContainer.appendChild(docElement);
+                    });
+                    
+                    // Add a summary at the top
+                    const summaryElement = document.createElement('div');
+                    summaryElement.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4';
+                    summaryElement.innerHTML = `
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                            <span class="text-blue-800 font-medium">${result.documents.length} document(s) available for your role</span>
+                        </div>
+                    `;
+                    documentsContainer.insertBefore(summaryElement, documentsContainer.firstChild);
+                }
+            } catch (error) {
+                console.error('Failed to load documents:', error);
+                const documentsContainer = document.getElementById('employeeDocuments');
+                documentsContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-exclamation-triangle text-4xl text-red-300 mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Error loading documents</h3>
+                        <p class="text-gray-500">Please refresh the page or contact support.</p>
+                        <button onclick="loadEmployeeDocuments()" class="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-sync-alt mr-2"></i>Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Disable send button and input
+            const sendButton = document.getElementById('sendButton');
+            input.disabled = true;
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Add user message
+            addMessage(message, 'user');
+            
+            // Clear input
+            input.value = '';
+            
+            // Add typing indicator
+            const typingId = addTypingIndicator();
+            
+            try {
+                const response = await fetch('/chatbot', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({question: message})
+                });
+                
+                const result = await response.json();
+                
+                // Remove typing indicator
+                removeTypingIndicator(typingId);
+                
+                if (result.success) {
+                    addMessage(result.response, 'bot');
+                } else {
+                    addMessage('Sorry, I encountered an error processing your request. Please try again.', 'bot', true);
+                }
+                
+            } catch (error) {
+                console.error('Chatbot error:', error);
+                removeTypingIndicator(typingId);
+                addMessage('Sorry, I\'m having trouble connecting. Please check your internet connection and try again.', 'bot', true);
+            }
+            
+            // Re-enable send button and input
+            input.disabled = false;
+            sendButton.disabled = false;
+            sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+            input.focus();
+        }
+
+        function addMessage(message, sender, isError = false) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageElement = document.createElement('div');
+            
+            if (sender === 'user') {
+                messageElement.className = 'bg-blue-600 text-white p-3 rounded-lg ml-8 max-w-xs ml-auto';
+                messageElement.innerHTML = `
+                    <div class="flex items-start space-x-2">
+                        <div class="flex-1">
+                            <p class="text-sm">${message}</p>
+                        </div>
+                        <i class="fas fa-user text-blue-200 mt-1 flex-shrink-0"></i>
+                    </div>
+                `;
+            } else {
+                const bgColor = isError ? 'bg-red-100' : 'bg-green-100';
+                const textColor = isError ? 'text-red-800' : 'text-green-800';
+                const iconColor = isError ? 'text-red-600' : 'text-green-600';
+                
+                messageElement.className = `${bgColor} p-3 rounded-lg mr-8 max-w-sm`;
+                messageElement.innerHTML = `
+                    <div class="flex items-start space-x-2">
+                        <i class="fas fa-robot ${iconColor} mt-1 flex-shrink-0"></i>
+                        <div class="flex-1">
+                            <p class="text-xs font-medium ${textColor} mb-1">AI Assistant</p>
+                            <p class="text-sm ${textColor}">${message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Store in chat history
+            chatHistory.push({message, sender, timestamp: new Date()});
+        }
+
+        function addTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingElement = document.createElement('div');
+            const typingId = 'typing-' + Date.now();
+            
+            typingElement.id = typingId;
+            typingElement.className = 'bg-gray-200 p-3 rounded-lg mr-8 max-w-sm';
+            typingElement.innerHTML = `
+                <div class="flex items-start space-x-2">
+                    <i class="fas fa-robot text-gray-600 mt-1"></i>
+                    <div class="flex-1">
+                        <p class="text-xs font-medium text-gray-600 mb-1">AI Assistant</p>
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return typingId;
+        }
+
+        function removeTypingIndicator(typingId) {
+            const typingElement = document.getElementById(typingId);
+            if (typingElement) {
+                typingElement.remove();
+            }
+        }
+
+        function askQuickQuestion(question) {
+            document.getElementById('chatInput').value = question;
+            sendMessage();
+        }
+
+        // Handle Enter key in chat input
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Load documents when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadEmployeeDocuments();
+            
+            // Focus on chat input
+            document.getElementById('chatInput').focus();
+        });
+    </script>
+</body>
+</html>

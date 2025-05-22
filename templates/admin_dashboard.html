@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Employee Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-user-shield text-2xl text-blue-600 mr-3"></i>
+                    <h1 class="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
+                </div>
+                <a href="/logout" class="text-red-600 hover:text-red-800 font-medium">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Dashboard Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Pre-onboarding Card -->
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer" onclick="window.open('/preonboarding', '_blank')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-plus text-2xl text-green-600"></i>
+                    </div>
+                    <i class="fas fa-external-link-alt text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Pre-onboarding Process</h3>
+                <p class="text-gray-600">Manage pre-onboarding activities and workflows</p>
+            </div>
+
+            <!-- Onboarding Card -->
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow cursor-pointer" onclick="toggleOnboardingPanel()">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-2xl text-blue-600"></i>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Onboarding Process</h3>
+                <p class="text-gray-600">Create users and manage onboarding documents</p>
+            </div>
+        </div>
+
+        <!-- Onboarding Panel -->
+        <div id="onboardingPanel" class="hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Create User -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-user-plus mr-2 text-blue-600"></i>Create New Employee
+                    </h3>
+                    <form id="createUserForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="fullName" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Enter employee's full name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="userEmail" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                   placeholder="employee@aiplanet.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Designation *</label>
+                            <select id="designation" required 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select Designation</option>
+                                <option value="data_scientist">Data Scientist</option>
+                                <option value="full_stack_developer">Full Stack Developer</option>
+                                <option value="business_analyst">Business Analyst</option>
+                                <option value="product_manager">Product Manager</option>
+                            </select>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle text-blue-600 mt-0.5 mr-2"></i>
+                                <div class="text-sm text-blue-800">
+                                    <p class="font-medium">What happens next:</p>
+                                    <ul class="mt-1 space-y-1 text-blue-700">
+                                        <li>• Secure password will be auto-generated</li>
+                                        <li>• Login credentials will be emailed to the employee</li>
+                                        <li>• Employee can access role-specific documents</li>
+                                        <li>• AI chatbot will be trained on their documents</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" id="createUserBtn"
+                                class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-200 font-medium">
+                            <i class="fas fa-user-plus mr-2"></i>Create User & Send Credentials
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Upload Documents -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-upload mr-2 text-green-600"></i>Upload Documents
+                    </h3>
+                    <form id="uploadForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Designation *</label>
+                            <select id="uploadDesignation" required 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select Designation</option>
+                                <option value="data_scientist">Data Scientist</option>
+                                <option value="full_stack_developer">Full Stack Developer</option>
+                                <option value="business_analyst">Business Analyst</option>
+                                <option value="product_manager">Product Manager</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Document *</label>
+                            <input type="file" id="documentFile" required accept=".pdf,.docx,.txt"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <p class="text-xs text-gray-500 mt-1">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Supported formats: PDF, DOCX, TXT (Max 10MB)
+                            </p>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-green-600 mt-0.5 mr-2"></i>
+                                <div class="text-sm text-green-800">
+                                    <p class="font-medium">Document suggestions:</p>
+                                    <ul class="mt-1 space-y-1 text-green-700">
+                                        <li>• Role-specific guidelines and procedures</li>
+                                        <li>• Company policies and handbook</li>
+                                        <li>• Training materials and resources</li>
+                                        <li>• Tool documentation and tutorials</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" id="uploadBtn"
+                                class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition duration-200 font-medium">
+                            <i class="fas fa-upload mr-2"></i>Upload Document
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Documents List -->
+            <div class="mt-6 bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-file-alt mr-2 text-purple-600"></i>Uploaded Documents
+                </h3>
+                <div id="documentsList" class="space-y-2">
+                    <!-- Documents will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleOnboardingPanel() {
+            const panel = document.getElementById('onboardingPanel');
+            panel.classList.toggle('hidden');
+            if (!panel.classList.contains('hidden')) {
+                loadDocuments();
+            }
+        }
+
+        document.getElementById('createUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const createUserBtn = document.getElementById('createUserBtn');
+            const originalText = createUserBtn.innerHTML;
+            
+            // Show loading state
+            createUserBtn.disabled = true;
+            createUserBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating User...';
+            
+            const formData = {
+                full_name: document.getElementById('fullName').value,
+                email: document.getElementById('userEmail').value,
+                designation: document.getElementById('designation').value
+            };
+            
+            try {
+                const response = await fetch('/create_user', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('User created successfully! Credentials have been sent via email.', 'success');
+                    document.getElementById('createUserForm').reset();
+                } else {
+                    showToast(result.message || 'Failed to create user', 'error');
+                }
+            } catch (error) {
+                console.error('Error creating user:', error);
+                showToast('Failed to create user. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                createUserBtn.disabled = false;
+                createUserBtn.innerHTML = originalText;
+            }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const uploadBtn = document.getElementById('uploadBtn');
+            const originalText = uploadBtn.innerHTML;
+            const fileInput = document.getElementById('documentFile');
+            
+            if (!fileInput.files[0]) {
+                showToast('Please select a file to upload', 'error');
+                return;
+            }
+            
+            // Check file size (10MB limit)
+            if (fileInput.files[0].size > 10 * 1024 * 1024) {
+                showToast('File size must be less than 10MB', 'error');
+                return;
+            }
+            
+            // Show loading state
+            uploadBtn.disabled = true;
+            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Uploading...';
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('designation', document.getElementById('uploadDesignation').value);
+            
+            try {
+                const response = await fetch('/upload_document', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('Document uploaded successfully!', 'success');
+                    document.getElementById('uploadForm').reset();
+                    loadDocuments();
+                } else {
+                    showToast(result.message || 'Failed to upload document', 'error');
+                }
+            } catch (error) {
+                console.error('Error uploading document:', error);
+                showToast('Failed to upload document. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                uploadBtn.disabled = false;
+                uploadBtn.innerHTML = originalText;
+            }
+        });
+
+        async function loadDocuments() {
+            try {
+                const response = await fetch('/get_documents');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const documentsList = document.getElementById('documentsList');
+                    documentsList.innerHTML = '';
+                    
+                    if (result.documents.length === 0) {
+                        documentsList.innerHTML = '<p class="text-gray-500 text-center py-4">No documents uploaded yet</p>';
+                        return;
+                    }
+                    
+                    result.documents.forEach(doc => {
+                        const docElement = document.createElement('div');
+                        docElement.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+                        docElement.innerHTML = `
+                            <div class="flex items-center">
+                                <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+                                <div>
+                                    <p class="font-medium text-gray-900">${doc[0]}</p>
+                                    <p class="text-sm text-gray-500">${doc[1]} • ${new Date(doc[2]).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+                            <a href="/download_document/${doc[0]}" 
+                               class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-download"></i>
+                            </a>
+                        `;
+                        documentsList.appendChild(docElement);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load documents:', error);
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-50 transition-opacity duration-300 ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
