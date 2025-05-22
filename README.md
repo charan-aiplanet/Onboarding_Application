@@ -1,4 +1,4 @@
-AI Planet Complete Onboarding System
+**AI Planet Complete Onboarding System**
 A comprehensive web application combining pre-onboarding and onboarding processes with role-based authentication, document management, offer letter generation, and AI-powered assistance.
 Features
 Pre-onboarding Features (Admin Only)
