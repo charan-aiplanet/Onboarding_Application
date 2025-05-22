@@ -12,12 +12,12 @@ Status Tracking: Monitor offer generation, sending, acceptance, and completion
 Onboarding Features
 Admin Features
 
-User Management: Create employee accounts with auto-generated passwords
-Document Management: Upload designation-specific onboarding documents
-Email Notifications: Automatic credential delivery to new employees
+- User Management: Create employee accounts with auto-generated passwords
+- Document Management: Upload designation-specific onboarding documents
+- Email Notifications: Automatic credential delivery to new employees
 
 Employee Features
 
-Document Access: View and download designation-specific documents
-AI Chatbot: RAG-based assistant trained on role-specific documents
-Responsive Design: Works seamlessly on desktop and mobile devices
+- Document Access: View and download designation-specific documents
+- AI Chatbot: RAG-based assistant trained on role-specific documents
+- Responsive Design: Works seamlessly on desktop and mobile devices
